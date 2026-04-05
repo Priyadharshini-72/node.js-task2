@@ -1,18 +1,26 @@
 const http=require('http');
 http.createServer((req,res)=>{
-    const start=Date.now();
-    let responseText="";
+    const startTime=Date.now();
     if (req.url==='/') {
-        responseText="Home Page";
-    } else if (req.url==='/api') {
-        responseText="API Route";
+        res.writeHead(200,{
+            'X-Powered-By':'Node.js',
+            'X-Response-Time':`${Date.now()-startTime}ms`,
+            'Content-Type': 'text/html'
+        });
+        res.end("Home Page");
     }
-    const time=Date.now()-start;
-    res.writeHead(200,{
-        'X-Powered-By': 'Node.js',
-        'X-Response-Time': time + 'ms',
-        'Content-Type': 'text/html'
-    });
-    console.log(res.getHeaders());
-    res.end(responseText);
+    else if (req.url==='/api') {
+        res.writeHead(200,{
+            'X-Powered-By': 'Node.js',
+            'X-Response-Time':`${Date.now()-startTime}ms`,
+            'Content-Type':'text/html'
+        });
+        res.end("API Route");
+    }
+    console.log("Response Headers Sent:");
+    console.log("X-Powered-By: Node.js");
+    console.log("X-Response-Time:",`${Date.now()-startTime}ms`);
+    console.log("Content-Type: text/html\n");
+
 }).listen(3000);
+console.log("Server running on port 3000");
